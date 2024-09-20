@@ -1,0 +1,26 @@
+using System.Collections.Generic;
+using System;
+
+public class Program {
+    // O(n) time | O(n) space - where n is the number of tokens
+    public int ReversePolishNotation(string[] tokens) {
+        Stack<int> stack = new Stack<int>();
+
+        foreach (var token in tokens) {
+            if (token.Equals("+")) {
+                stack.Push(stack.Pop() + stack.Pop());
+            } else if (token.Equals("-")) {
+                int firstNum = stack.Pop();
+                stack.Push(stack.Pop() - firstNum);
+            } else if (token.Equals("*")) {
+                stack.Push(stack.Pop() * stack.Pop());
+            } else if (token.Equals("/")) {
+                int firstNum = stack.Pop();
+                stack.Push(stack.Pop() / firstNum);
+            } else {
+                stack.Push(Int32.Parse(token));
+            }
+        }
+        return stack.Pop();
+    }
+}
