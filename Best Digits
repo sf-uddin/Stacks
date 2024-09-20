@@ -1,0 +1,40 @@
+using System.Collections.Generic;
+using System.Text;
+using System;
+
+public class Program
+{
+    // O(n) time | O(n) space - where n is the length of the input string
+    public string BestDigits(string number, int numDigits)
+    {
+        Stack<char> stack = new Stack<char>();
+
+        for (int idx = 0; idx < number.Length; idx++)
+        {
+            char character = number[idx];
+            while (numDigits > 0 && stack.Count > 0 && character > stack.Peek())
+            {
+                numDigits--;
+                stack.Pop();
+            }
+            stack.Push(character);
+        }
+
+        while (numDigits > 0)
+        {
+            numDigits--;
+            stack.Pop();
+        }
+
+        // build final string from stack
+        StringBuilder bestDigitString = new StringBuilder();
+        while (stack.Count > 0)
+        {
+            bestDigitString.Append(stack.Pop());
+        }
+
+        var charArray = bestDigitString.ToString().ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
+    }
+}
