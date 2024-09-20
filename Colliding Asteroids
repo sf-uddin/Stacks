@@ -1,0 +1,42 @@
+using System.Collections.Generic;
+using System;
+
+public class Program {
+    // O(n) time | O(n) space - where n is the number of asteroids
+    public int[] CollidingAsteroids(int[] asteroids) {
+        Stack<int> resultStack = new Stack<int>();
+        foreach (var asteroid in asteroids) {
+            if (resultStack.Count == 0 || asteroid > 0 || resultStack.Peek() < 0) {
+                resultStack.Push(asteroid);
+                continue;
+            }
+
+            while (resultStack.Count > 0) {
+                if (resultStack.Peek() < 0) {
+                    resultStack.Push(asteroid);
+                    break;
+                }
+
+                int asteroidSize = Math.Abs(asteroid);
+                if (resultStack.Peek() > asteroidSize) break;
+
+                if (resultStack.Peek() == asteroidSize) {
+                    resultStack.Pop();
+                    break;
+                }
+
+                resultStack.Pop();
+
+                if (resultStack.Count == 0) {
+                    resultStack.Push(asteroid);
+                    break;
+                }
+            }
+        }
+        int[] output = new int[resultStack.Count];
+        for (int i = resultStack.Count - 1; i >= 0; i--) {
+            output[i] = resultStack.Pop();
+        }
+        return output;
+    }
+}
